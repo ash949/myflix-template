@@ -4,6 +4,7 @@ const express = require('express'),
   mongoose = require('mongoose'),
   passport = require('passport'),
   cors = require('cors');
+const { check, validationResult } = require('express-validator');
 
 
 /*==========================*/
