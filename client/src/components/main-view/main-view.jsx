@@ -1,11 +1,16 @@
 // client/src/main-view/main-view.jsx
 import React from 'react';
 import axios from 'axios';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+
 
 import { LoginView } from '../login-view/login-view';
 import { MovieCard } from '../movie-card/movie-card';
 import { MovieView } from '../movie-view/movie-view';
 import { RegistrationView } from '../registration-view/registration-view';
+
+import { setMovies, setFilter } from '../../actions/actions';
 
 export class MainView extends React.Component {
 
@@ -42,9 +47,10 @@ export class MainView extends React.Component {
     })
       .then(response => {
         // Assign the result to the state
-        this.setState({
-          movies: response.data
-        });
+        // this.setState({
+        //   movies: response.data
+        // });
+        this.props.setMovies(response.data);
       })
       .catch(function (error) {
         console.log(error);
@@ -69,7 +75,8 @@ export class MainView extends React.Component {
   }
 
   render() {
-    const { movies, selectedMovie, user, register } = this.state;
+    let { movies } = this.props;
+    const { selectedMovie, user, register } = this.state;
 
     if (register) return <RegistrationView onLoggedIn={user => this.onLoggedIn(user)} />
 
@@ -89,4 +96,23 @@ export class MainView extends React.Component {
       </div>
     );
   }
+}
+
+let mapStateToProps = state => {
+  return {
+    movies: state.movies,
+    test: '123'
+  }
+}
+
+let mapDispatchToProps = {
+  setMovies
+}
+
+// #4
+export default connect(mapStateToProps, mapDispatchToProps)(MainView);
+
+MainView.propTypes = {
+  test: PropTypes.string.isRequired,
+  setMovies: PropTypes.func.isRequired
 }
