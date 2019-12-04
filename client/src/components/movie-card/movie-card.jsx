@@ -4,6 +4,8 @@ import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 
+import PropTypes from 'prop-types';
+
 export class MovieCard extends React.Component {
   render() {
     const { movie, onClick } = this.props;
@@ -19,4 +21,13 @@ export class MovieCard extends React.Component {
       </Card>
     );
   }
+}
+
+MovieCard.propTypes = {
+  movie: PropTypes.shape({
+    Title: PropTypes.string,
+    Description: PropTypes.string,
+    ImagePath: PropTypes.string
+  }).isRequired,
+  onClick: PropTypes.func.isRequired
 }

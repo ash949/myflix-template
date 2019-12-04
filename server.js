@@ -14,16 +14,16 @@ const { check, validationResult } = require('express-validator');
 const Models = require('./models.js');
 const Movies = Models.Movie;
 const Users = Models.User;
-mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true });
+mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
 
 const app = express();
 app.use(bodyParser.json());
 app.use(morgan('common'));
 app.use(express.static('public'));
-var auth = require('./auth')(app);
-require('./passport');
 app.use(cors());
 
+var auth = require('./auth')(app);
+require('./passport');
 
 /*==========================*/
 /*          ROUTES          */
@@ -36,8 +36,8 @@ app.get('/', function (req, res) {
 
 
 // Return a list of ALL movies to the user
-app.get("/movies", function (req, res) {
-  // app.get("/movies", passport.authenticate('jwt', { session: false }), function (req, res) {
+// app.get("/movies", function (req, res) {
+app.get("/movies", passport.authenticate('jwt', { session: false }), function (req, res) {
   Movies.find()
     .then(function (movies) {
       res.status(201).json(movies);

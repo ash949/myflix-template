@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import axios from 'axios';
 
 export function LoginView(props) {
   const [username, setUsername] = useState('');
@@ -7,9 +9,18 @@ export function LoginView(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(username, password);
-    // Send a request to the server for authentication then call props.onLoggedIn(username)
-    props.onLoggedIn(username);
+    /* Send a request to the server for authentication */
+    axios.post('http://localhost:8080/login', {
+      Username: username,
+      Password: password
+    })
+      .then(response => {
+        const data = response.data;
+        props.onLoggedIn(data);
+      })
+      .catch(e => {
+        console.log(e)
+      });
   };
 
   const openRegistrationView = (e) => {
@@ -18,16 +29,15 @@ export function LoginView(props) {
 
   return (
     <Form>
-      <Form.Group controlId="username">
-        <Form.Label>Username</Form.Label>
-        <Form.Control type="text" placeholder="Enter username" onChange={e => setUsername(e.target.value)} />
+      <Form.Group controlId="formBasicUsername">
+        <Form.Label>Username:</Form.Label>
+        <Form.Control type="text" placeholder="Enter username" value={username} onChange={e => setUsername(e.target.value)} />
       </Form.Group>
 
-      <Form.Group controlId="password">
+      <Form.Group controlId="formBasicPassword">
         <Form.Label>Password</Form.Label>
-        <Form.Control type="password" placeholder="Enter Password" onChange={e => setPassword(e.target.value)} />
+        <Form.Control type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
       </Form.Group>
-
       <Button variant="primary" type="submit" onClick={handleSubmit}>
         Submit
       </Button>
@@ -37,5 +47,6 @@ export function LoginView(props) {
         Create new account
       </Button>
     </Form>
-  );
+  )
 }
+

@@ -21,7 +21,25 @@ export class MainView extends React.Component {
   }
 
   componentDidMount() {
-    axios.get('http://localhost:8080/movies')
+    let accessToken = localStorage.getItem('token');
+    if (accessToken !== null) {
+      this.setState({
+        user: localStorage.getItem('user')
+      });
+      this.getMovies(accessToken);
+    }
+  }
+
+  onMovieClick(movie) {
+    this.setState({
+      selectedMovie: movie
+    });
+  }
+
+  getMovies(token) {
+    axios.get('http://localhost:8080/movies', {
+      headers: { Authorization: `Bearer ${token}` }
+    })
       .then(response => {
         // Assign the result to the state
         this.setState({
@@ -32,17 +50,16 @@ export class MainView extends React.Component {
         console.log(error);
       });
   }
-  onMovieClick(movie) {
-    this.setState({
-      selectedMovie: movie
-    });
-  }
 
-  onLoggedIn(user) {
+  onLoggedIn(authData) {
+    console.log(authData);
     this.setState({
-      user,
-      register: false
+      user: authData.user.Username
     });
+
+    localStorage.setItem('token', authData.token);
+    localStorage.setItem('user', authData.user.Username);
+    this.getMovies(authData.token);
   }
 
   openRegistrationView() {
