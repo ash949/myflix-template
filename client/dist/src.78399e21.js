@@ -49031,7 +49031,7 @@ function (_React$Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(MainView).call(this));
     _this.state = {
-      movies: null,
+      movies: [],
       selectedMovie: null,
       user: null,
       register: false
@@ -49097,44 +49097,33 @@ function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this3 = this;
-
-      var _this$state = this.state,
-          movies = _this$state.movies,
-          selectedMovie = _this$state.selectedMovie,
-          user = _this$state.user,
-          register = _this$state.register;
-      if (register) return _react.default.createElement(_registrationView.RegistrationView, {
-        onLoggedIn: function onLoggedIn(user) {
-          return _this3.onLoggedIn(user);
-        }
-      });
-      if (!user) return _react.default.createElement(_loginView.LoginView, {
-        onLoggedIn: function onLoggedIn(user) {
-          return _this3.onLoggedIn(user);
-        },
-        openRegistrationView: function openRegistrationView() {
-          return _this3.openRegistrationView();
-        }
-      }); // Before the movies have been loaded
-
-      if (!movies) return _react.default.createElement("div", {
-        className: "main-view"
-      });
-      return _react.default.createElement("div", {
-        className: "main-view"
-      }, selectedMovie ? _react.default.createElement(_movieView.MovieView, {
-        movie: selectedMovie
-      }) : movies.map(function (movie) {
-        return _react.default.createElement(_movieCard.MovieCard, {
-          key: movie._id,
-          movie: movie,
-          onClick: function onClick(movie) {
-            return _this3.onMovieClick(movie);
-          }
-        });
+      var movies = this.state.movies;
+      if (movies.length === 0) return _react.default.createElement("div", null, "The list is empty!");
+      return _react.default.createElement("ul", null, movies.map(function (movie) {
+        return _react.default.createElement("li", {
+          key: movie._id
+        }, movie.Title);
       }));
-    }
+    } // render() {
+    //   const { movies, selectedMovie, user, register } = this.state;
+    //   this.state.user = 'lol';
+    //   alert(this.state.user);
+    //   if (register) return <RegistrationView onLoggedIn={user => this.onLoggedIn(user)} />
+    //   if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} openRegistrationView={() => this.openRegistrationView()} />;
+    //   // Before the movies have been loaded
+    //   if (!movies) return <div className="main-view" />;
+    //   return (
+    //     <div className="main-view">
+    //       {selectedMovie
+    //         ? <MovieView movie={selectedMovie} />
+    //         : movies.map(movie => (
+    //           <MovieCard key={movie._id} movie={movie} onClick={movie => this.onMovieClick(movie)} />
+    //         ))
+    //       }
+    //     </div>
+    //   );
+    // }
+
   }]);
 
   return MainView;
@@ -49298,7 +49287,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51814" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52046" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -13,7 +13,7 @@ export class MainView extends React.Component {
     super();
 
     this.state = {
-      movies: null,
+      movies: [],
       selectedMovie: null,
       user: null,
       register: false
@@ -69,24 +69,42 @@ export class MainView extends React.Component {
   }
 
   render() {
-    const { movies, selectedMovie, user, register } = this.state;
-
-    if (register) return <RegistrationView onLoggedIn={user => this.onLoggedIn(user)} />
-
-    if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} openRegistrationView={() => this.openRegistrationView()} />;
-
-    // Before the movies have been loaded
-    if (!movies) return <div className="main-view" />;
+    let { movies } = this.state;
+    if (movies.length === 0) return <div>The list is empty!</div>;
 
     return (
-      <div className="main-view">
-        {selectedMovie
-          ? <MovieView movie={selectedMovie} />
-          : movies.map(movie => (
-            <MovieCard key={movie._id} movie={movie} onClick={movie => this.onMovieClick(movie)} />
-          ))
-        }
-      </div>
+      <ul>
+        {movies.map(movie => <li key={movie._id}>{movie.Title}</li>)}
+      </ul>
     );
   }
+
+
+
+
+
+  // render() {
+  //   const { movies, selectedMovie, user, register } = this.state;
+
+  //   this.state.user = 'lol';
+  //   alert(this.state.user);
+
+  //   if (register) return <RegistrationView onLoggedIn={user => this.onLoggedIn(user)} />
+
+  //   if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} openRegistrationView={() => this.openRegistrationView()} />;
+
+  //   // Before the movies have been loaded
+  //   if (!movies) return <div className="main-view" />;
+
+  //   return (
+  //     <div className="main-view">
+  //       {selectedMovie
+  //         ? <MovieView movie={selectedMovie} />
+  //         : movies.map(movie => (
+  //           <MovieCard key={movie._id} movie={movie} onClick={movie => this.onMovieClick(movie)} />
+  //         ))
+  //       }
+  //     </div>
+  //   );
+  // }
 }
